@@ -1,0 +1,217 @@
+Group 15:
+Dhruvkumar Kiranbhai Patel(A20501734)
+Janki Pragneshkumar Thakar(A20516458)
+Neil Shah(A20500775)
+
+Relational Schema
+Strong entities + weak entities + multivalued attributes
+
+Emp(Name, Email, Address, Role, Pass) // Here Email is the primary key
+
+Property(Property_id, Property_type, City, Available_Date, Rooms, Address, Crime_Rate, Neighbourhood, Price, Near_by_school, Extra_Feature, Book_Status, Book_id) // Here Property_id is a primary key
+
+Booking(Booking_id, Status, cc_number, cc_address, property_id) // Booking_id is a primary key and Property_id is a foreign key referencing Property table
+
+
+Agents(Agent_id, Aname, EmailAddress, JobTitle, Contact_Information, Agency, Property_id) //Agent_id is a primary key and Property_id is a foreign key referencing Property table
+
+Agent_Address(Agent_id, Address) //Address is a primary key
+
+Renters(Renter_id, Name, EmailAddress, Location, MoveInDate, Budget, Property_id) // Renter_id is a primary key and Property_id is a foreign key referencing Property table
+
+Renter_Address(Renter_id, Renter_Address) // Renter_Address is a primary key
+
+Reward_Program(Renter_id, Rewardpoint_count) // Renter_id is a primary key
+
+CreditCard(Name, CreditCard_Number, Expiration_Date, Security_Number, Renter_id) // CreditCard_Number is a primary key and Renter_id is foreign key referencing Property table
+
+Loc(Property_id, Address, City, Zipcode, LID) // LID is a primary key and Property_id is a foreign key referencing Property table
+
+House(Availibility, LID, Square_Foot, NumberofRooms, HID) // HID is a primary key and LID is a foreign key referencing Loc table
+
+Appartment(Availibility, LID, Square_Foot, Building_Type, NumberofRooms, AID) // AID is a primary key and LID is a foreign key referencing Loc table
+
+Commercial_Buildings(Availibility, LID, Square_Foot, BusinessType, CBID) // CBID is a primary key and LID is foreign key referencing Loc table
+
+VacationHome(Rent, LID, NumberofRooms, VID) // VID is a primary key and Property_id is a foreign key referencing Neighbourhood
+
+Land(Area, LID, LandID) // LandId is a primary key and Property_id is a foreign key referencing Property table
+
+Price(RetailPrice, Property_id) // RetailPrice is a primary key and Property_id is a foreign key referencing Property table
+
+
+Relationships
+Helps(Agent_id, Renter_id)// Agent_id and Renter_id both are primary keys
+
+Sell(Agent_id, Property_id) // Agent_id and Property_id both are primary keys
+
+Buy(property_id, Renter_id)// Property_id and Renter_id both are primary keys
+
+Record(Renter_id, Booking_id)// renter_id and Booking_id both are primary keys
+
+Join(Renter_id) Renter_id is a primary key
+
+
+SQL Script:
+
+CREATE TABLE emp(
+	name VARCHAR(20),
+	email VARCHAR(25),
+	address VARCHAR(50),
+	role VARCHAR(10),
+	pass VARCHAR(20),
+	PRIMARY KEY(email));
+
+CREATE TABLE property(
+	property_id NUMERIC(10),
+	property_type VARCHAR(10),
+	city VARCHAR(15),
+	available_date VARCHAR(15),
+	rooms NUMERIC(5),
+	address VARCHAR(50),
+	crime_rate VARCHAR(15),
+	neighbourhood VARCHAR(15),
+	price NUMERIC(10),
+	near_by_school VARCHAR(30),
+	extra_feature VARCHAR(50),
+	book_status VARCHAR(20),
+	book_id NUMERIC(10),
+	PRIMARY KEY(property_id));
+
+CREATE TABLE booking(
+	booking_id NUMERIC(10),
+	status VARCHAR(10),
+	cc_number NUMERIC(16),
+	cc_address VARCHAR(50),
+	property_id NUMERIC(10),
+	PRIMARY KEY(booking_id),
+	FOREIGN KEY(property_id) referencing property);
+
+ 
+CREATE TABLE Agents(
+	agentId VARCHAR(9),
+	aName VARCHAR(10),
+	emailAddress VARCHAR(15),
+	jobTitle VARCHAR(15),
+	contactInformation NUMERIC(10,0),
+	agency VARCHAR(15),
+	property_id VARCHAR(9),
+	PRIMARY KEY(agentId),
+	FOREIGN KEY (property_id) REFERENCES property);
+	
+CREATE TABLE Agent_Address
+	(agentId VARCHAR(9),
+	 address VARCHAR(50),
+	PRIMARY KEY (address));
+	
+CREATE TABLE Renters(
+	renterId VARCHAR(9),
+	name VARCHAR(10),
+	emailAddress VARCHAR(15),
+	location VARCHAR(15),
+	moveInDate VARCHAR(15),
+	budget NUMERIC(10),	
+	property_id VARCHAR(9),
+	PRIMARY KEY (renterId),
+	FOREIGN KEY (property_id) REFERENCES property
+	 );
+	 
+CREATE TABLE Renter_Address(
+	renterId VARCHAR(9),
+	renterAddress VARCHAR(50),
+	PRIMARY KEY (renterAddress)
+	);
+	
+CREATE TABLE Reward_program(
+	renterId VARCHAR(9),
+	rewardPointCount NUMERIC(10),
+	PRIMARY KEY (renterId)
+	);
+	
+CREATE TABLE Creditcard (
+	Name VARCHAR(15),
+	expirationDate VARCHAR(15),
+	securityNumber NUMERIC(5),
+	PRIMARY KEY(securityNumber),
+	renterId VARCHAR(9),
+	FOREIGN KEY (renterId) REFERENCES Renters
+	);
+	
+CREATE TABLE Creditcard_Number(
+	securityNumber NUMERIC(5),
+	creditcardNumber NUMERIC(16),
+	PRIMARY KEY(creditcardNumber));
+	
+CREATE TABLE Loc(
+	property_id VARCHAR(9),
+	address VARCHAR(25),
+	city VARCHAR(10),
+	zipcode NUMERIC(6),
+	LID NUMERIC(5),
+	PRIMARY KEY (LID),
+	FOREIGN KEY (property_id) REFERENCES Property
+	);
+	
+CREATE TABLE House(
+	availibility VARCHAR(20),
+	LID NUMERIC(5),
+	squareFoot NUMERIC(10),
+	numberofRooms NUMERIC(1),
+	HID NUMERIC(5),
+	PRIMARY KEY (HID),
+	FOREIGN KEY (LID) REFERENCES Loc
+	);
+	
+CREATE TABLE Appartment(
+	availibility VARCHAR(20),
+	LID NUMERIC(5),
+	squareFoot NUMERIC(10),
+	buildingType VARCHAR(20),
+	numberofRooms NUMERIC(1),
+	AID NUMERIC(5),
+	PRIMARY KEY (AID),
+	FOREIGN KEY (LID) REFERENCES Loc
+	);
+	
+CREATE TABLE Commercial_Buildings(
+	availibility VARCHAR(20),
+	LID NUMERIC(5),
+	squareFoot NUMERIC(10),
+	businessType VARCHAR(20),
+	CBID NUMERIC(5),
+	PRIMARY KEY (CBID),
+	FOREIGN KEY (LID) REFERENCES Loc
+	);
+	
+CREATE TABLE Neighbourhood(
+	propertyId VARCHAR(9),
+	crimeRate NUMERIC(5),
+	nearBySchool VARCHAR(10),
+	PRIMARY KEY (propertyId),
+	FOREIGN KEY (propertyId) REFERENCES Property
+	);
+	
+CREATE TABLE Vacationhome(
+	rent NUMERIC(5),
+	LID NUMERIC(5),
+	numberofRooms NUMERIC(1),
+	VID NUMERIC(5),
+	PRIMARY KEY (VID),
+	FOREIGN KEY (LID) REFERENCES Loc
+	);
+	
+CREATE TABLE Land(
+	area VARCHAR(10),
+	LID NUMERIC(5),
+	landID NUMERIC(5),
+	PRIMARY KEY (landID),
+	FOREIGN KEY (LID) REFERENCES Loc
+	);
+	
+CREATE TABLE Price(
+	retailPrice NUMERIC(10),
+	property_id VARCHAR(9),
+	PRIMARY KEY (retailPrice),
+	FOREIGN KEY (property_id) REFERENCES Property
+	);
+
